@@ -1,0 +1,27 @@
+{
+    "name": "oktopost/serialization",
+    "description": "Serialization library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Podrabinek",
+            "email": "dpodrabinek@oktopost.com"
+        },
+        {
+            "name": "Alexey Puchkov",
+            "email": "alexey@oktopost.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "oktopost/skeleton": "^1.0",
+        "oktopost/objection": "^1.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Serialization": "src"
+        }
+    },
+    "minimum-stability": "stable"
+}
