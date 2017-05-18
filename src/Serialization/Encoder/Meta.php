@@ -1,8 +1,8 @@
 <?php
-namespace Serialization;
+namespace Serialization\Encoder;
 
 
-use Serialization\Base\IMeta;
+use Serialization\Base\Encoder\IMeta;
 
 
 class Meta implements IMeta

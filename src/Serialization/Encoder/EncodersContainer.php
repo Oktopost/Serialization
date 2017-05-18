@@ -1,21 +1,22 @@
 <?php
-namespace Serialization;
+namespace Serialization\Encoder;
 
 
-use Serialization\Base\ISerializerContainer;
+use Serialization\Base\Encoder\IEncodersContainer;
 use Serialization\Exceptions\SerializationException;
+use Serialization\IEncoder;
 
 
-class SerializerContainer implements ISerializerContainer
+class EncodersContainer implements IEncodersContainer
 {
-	/** @var ISerializer[] */
+	/** @var IEncoder[] */
 	private $byType = [];
 	
-	/** @var ISerializer[] */
+	/** @var IEncoder[] */
 	private $serializers = [];
 	
 	
-	public function add(ISerializer $serializer): ISerializerContainer
+	public function add(IEncoder $serializer): IEncodersContainer
 	{
 		$name = $serializer->serializerName();
 		
@@ -28,7 +29,7 @@ class SerializerContainer implements ISerializerContainer
 		return $this;
 	}
 
-	public function getByType(string $type): ISerializer
+	public function getByType(string $type): IEncoder
 	{
 		if (!isset($this->byType[$type]))
 			throw new SerializationException("There is not serializer of type <$type> defined");
@@ -36,7 +37,7 @@ class SerializerContainer implements ISerializerContainer
 		return $this->byType[$type];
 	}
 
-	public function getForTarget($target): ISerializer
+	public function getForTarget($target): IEncoder
 	{
 		foreach ($this->serializers as $serializer)
 		{

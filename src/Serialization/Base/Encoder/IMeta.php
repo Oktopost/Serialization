@@ -1,5 +1,5 @@
 <?php
-namespace Serialization\Base;
+namespace Serialization\Base\Encoder;
 
 
 /**

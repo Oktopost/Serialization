@@ -4,7 +4,11 @@ namespace Serialization;
 
 
 use Serialization\Base;
+use Serialization\Encoder\Meta;
+use Serialization\Encoder\EncodersContainer;
 
 
-$this->set(Base\IMeta::class, 					Meta::class);
-$this->set(Base\ISerializerContainer::class,	SerializerContainer::class);
+$this->set(Base\ISerialization::class,				Serialization::class);
+$this->set(Base\ISerializationContainer::class,		SerializationContainer::class);
+$this->set(Base\Encoder\IMeta::class, 				Meta::class);
+$this->set(Base\Encoder\IEncodersContainer::class,	EncodersContainer::class);

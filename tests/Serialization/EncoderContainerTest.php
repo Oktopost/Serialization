@@ -3,19 +3,20 @@ namespace Serialization;
 
 
 use PHPUnit\Framework\TestCase;
-use Serialization\Base\ISerializerContainer;
+use Serialization\Base\Encoder\IEncodersContainer;
+use Serialization\Encoder\EncodersContainer;
 
 
-class SerializerContainerTest extends TestCase
+class EncoderContainerTest extends TestCase
 {
 	/**
 	 * @param string $name
-	 * @return \PHPUnit_Framework_MockObject_MockObject|ISerializer
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IEncoder
 	 */
-	private function mockSerializer(string $name): ISerializer
+	private function mockEncoder(string $name): IEncoder
 	{
 		/** @noinspection PhpIncompatibleReturnTypeInspection */
-		$serializer = $this->createMock(ISerializer::class);
+		$serializer = $this->createMock(IEncoder::class);
 		
 		if ($name)
 		{
@@ -28,14 +29,14 @@ class SerializerContainerTest extends TestCase
 	
 	public function test_Skeleton()
 	{
-		self::assertInstanceOf(SerializerContainer::class, Scope::skeleton(ISerializerContainer::class));
+		self::assertInstanceOf(EncodersContainer::class, Scope::skeleton(IEncodersContainer::class));
 	}
 	
 	
 	public function test_ReturnSelf()
 	{
-		$subject = new SerializerContainer();
-		self::assertSame($subject, $subject->add($this->mockSerializer('a')));
+		$subject = new EncodersContainer();
+		self::assertSame($subject, $subject->add($this->mockEncoder('a')));
 	}
 
 
@@ -44,15 +45,15 @@ class SerializerContainerTest extends TestCase
 	 */
 	public function test_getByType_NotFound_ThrowException()
 	{
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->getByType('a');
 	}
 	
 	public function test_getByType_FoundAndReturned()
 	{
-		$serializer = $this->mockSerializer('abc');
+		$serializer = $this->mockEncoder('abc');
 		
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->add($serializer);
 		
 		self::assertSame($serializer, $subject->getByType('abc'));
@@ -64,7 +65,7 @@ class SerializerContainerTest extends TestCase
 	 */
 	public function test_getForTarget_NotFound_ThrowException()
 	{
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->getForTarget(123);
 	}
 	
@@ -73,16 +74,16 @@ class SerializerContainerTest extends TestCase
 	 */
 	public function test_getForTarget_AllSerializersCalled()
 	{
-		$serializer1 = $this->mockSerializer('a');
+		$serializer1 = $this->mockEncoder('a');
 		$serializer1->expects($this->once())->method('canSerialize')->willReturn(false);
 		
-		$serializer2 = $this->mockSerializer('b');
+		$serializer2 = $this->mockEncoder('b');
 		$serializer2->expects($this->once())->method('canSerialize')->willReturn(false);
 		
-		$serializer3 = $this->mockSerializer('c');
+		$serializer3 = $this->mockEncoder('c');
 		$serializer3->expects($this->once())->method('canSerialize')->willReturn(false);
 		
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->add($serializer1);
 		$subject->add($serializer2);
 		$subject->add($serializer3);
@@ -92,16 +93,16 @@ class SerializerContainerTest extends TestCase
 	
 	public function test_getForTarget_SerializerFound_NewerSerializersNotCalled()
 	{
-		$serializer1 = $this->mockSerializer('a');
+		$serializer1 = $this->mockEncoder('a');
 		$serializer1->expects($this->once())->method('canSerialize')->willReturn(false);
 		
-		$serializer2 = $this->mockSerializer('b');
+		$serializer2 = $this->mockEncoder('b');
 		$serializer2->expects($this->once())->method('canSerialize')->willReturn(true);
 		
-		$serializer3 = $this->mockSerializer('c');
+		$serializer3 = $this->mockEncoder('c');
 		$serializer3->expects($this->never())->method('canSerialize');
 		
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->add($serializer1);
 		$subject->add($serializer2);
 		$subject->add($serializer3);
@@ -111,10 +112,10 @@ class SerializerContainerTest extends TestCase
 	
 	public function test_getForTarget_SerializerFound_SerializerReturned()
 	{
-		$serializer = $this->mockSerializer('a');
+		$serializer = $this->mockEncoder('a');
 		$serializer->expects($this->once())->method('canSerialize')->willReturn(true);
 		
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->add($serializer);
 		
 		self::assertSame($serializer, $subject->getForTarget(123));
@@ -122,7 +123,7 @@ class SerializerContainerTest extends TestCase
 	
 	public function test_getForTarget_DataPassedToSerializer()
 	{
-		$serializer = $this->mockSerializer('b');
+		$serializer = $this->mockEncoder('b');
 		
 		$serializer
 			->expects($this->once())
@@ -130,7 +131,7 @@ class SerializerContainerTest extends TestCase
 			->with(123)
 			->willReturn(true);
 		
-		$subject = new SerializerContainer();
+		$subject = new EncodersContainer();
 		$subject->add($serializer);
 		
 		$subject->getForTarget(123);
@@ -142,8 +143,8 @@ class SerializerContainerTest extends TestCase
 	 */
 	public function test_add_SerializerAlreadyDefined_ThrowException()
 	{
-		$subject = new SerializerContainer();
-		$subject->add($this->mockSerializer('a'));
-		$subject->add($this->mockSerializer('a'));
+		$subject = new EncodersContainer();
+		$subject->add($this->mockEncoder('a'));
+		$subject->add($this->mockEncoder('a'));
 	}
 }

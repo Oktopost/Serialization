@@ -3,7 +3,8 @@ namespace Serialization;
 
 
 use PHPUnit\Framework\TestCase;
-use Serialization\Base\IMeta;
+use Serialization\Base\Encoder\IMeta;
+use Serialization\Encoder\Meta;
 
 
 class MetaTest extends TestCase
