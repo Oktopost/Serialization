@@ -5,4 +5,4 @@ php:
   - '7.1'
   
 script:
-  - composer test
+  - ./vendor/phpunit/phpunit/phpunit 
