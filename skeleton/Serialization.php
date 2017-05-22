@@ -4,11 +4,9 @@ namespace Serialization;
 
 
 use Serialization\Base;
-use Serialization\Encoder\Meta;
-use Serialization\Encoder\EncodersContainer;
+use Serialization\Json\JsonSerializersContainer;
+use Serialization\Serializers\JsonSerializer;
 
 
-$this->set(Base\ISerialization::class,				Serialization::class);
-$this->set(Base\ISerializationContainer::class,		SerializationContainer::class);
-$this->set(Base\Encoder\IMeta::class, 				Meta::class);
-$this->set(Base\Encoder\IEncodersContainer::class,	EncodersContainer::class);
+$this->set(Base\IJsonSerializer::class,				        JsonSerializer::class);
+$this->set(Base\Json\IJsonSerializersContainer::class,		JsonSerializersContainer::class);
