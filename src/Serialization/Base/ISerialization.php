@@ -2,38 +2,32 @@
 namespace Serialization\Base;
 
 
-use Serialization\Base\ISerializer;
-
-
 /**
  * @skeleton
  */
-interface ISerialization extends ISerializer
+interface ISerialization extends INormalizedSerializer
 {
-	public function add(ISerializer $serializer): ISerialization;
+	public function add(INormalizedSerializer $serializer): ISerialization;
+	
 	
 	/**
 	 * Array must contain objects of same type
-	 * @param mixed $data
-	 * @return bool
 	 */
 	public function canSerializeArray(array $data): bool;
 	
 	/**
-	 * @param mixed $data
+	 * Data must be a previously serialized array.
+	 * @param string $data Serialized array of items.
 	 * @return bool
 	 */
-	public function canDeserializeArray(array $data): bool;
+	public function canDeserializeArray(string $data): bool;
+	
+	public function serializeAll(array $data): string;
 	
 	/**
-	 * @param mixed $data
-	 * @return mixed
+	 * Data must be a previously serialized array.
+	 * @param string $data Serialized array of items.
+	 * @return array
 	 */
-	public function serializeAll(array $data);
-	
-	/**
-	 * @param mixed $data
-	 * @return mixed
-	 */
-	public function deserialize($data);
+	public function deserializeAll(string $data): array;
 }

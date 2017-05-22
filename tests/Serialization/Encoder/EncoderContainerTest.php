@@ -1,10 +1,12 @@
 <?php
-namespace Serialization;
+namespace Serialization\Encoder;
 
 
 use PHPUnit\Framework\TestCase;
+
+use Serialization\Scope;
+use Serialization\Base\Encoder\IEncoder;
 use Serialization\Base\Encoder\IEncodersContainer;
-use Serialization\Encoder\EncodersContainer;
 
 
 class EncoderContainerTest extends TestCase

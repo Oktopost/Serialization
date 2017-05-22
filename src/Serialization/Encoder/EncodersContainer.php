@@ -4,7 +4,7 @@ namespace Serialization\Encoder;
 
 use Serialization\Base\Encoder\IEncodersContainer;
 use Serialization\Exceptions\SerializationException;
-use Serialization\IEncoder;
+use Serialization\Base\Encoder\IEncoder;
 
 
 class EncodersContainer implements IEncodersContainer

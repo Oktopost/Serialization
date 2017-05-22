@@ -1,8 +1,5 @@
 <?php
-namespace Serialization;
-
-
-use Serialization\Base\Encoder\IMeta;
+namespace Serialization\Base\Encoder;
 
 
 interface IEncoder

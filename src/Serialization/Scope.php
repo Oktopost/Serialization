@@ -19,7 +19,7 @@ class Scope
 
 	/**
 	 * @param string|null $interface
-	 * @return mixed
+	 * @return mixed|Skeleton
 	 */
 	public static function skeleton(?string $interface = null)
 	{

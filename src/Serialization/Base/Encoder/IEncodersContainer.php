@@ -2,9 +2,6 @@
 namespace Serialization\Base\Encoder;
 
 
-use Serialization\IEncoder;
-
-
 /**
  * @skeleton
  */

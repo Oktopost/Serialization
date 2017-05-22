@@ -7,6 +7,12 @@ interface ISerializer
 	public function canDeserialize(string $data): bool;
 	
 	/**
+	 * @param string $data
+	 * @return mixed
+	 */
+	public function deserialize(string $data);
+	
+	/**
 	 * @param mixed $data
 	 * @return bool
 	 */
@@ -17,10 +23,4 @@ interface ISerializer
 	 * @return string
 	 */
 	public function serialize($data): string;
-	
-	/**
-	 * @param string $data
-	 * @return mixed
-	 */
-	public function deserialize($data);
 }

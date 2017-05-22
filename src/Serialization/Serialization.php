@@ -4,56 +4,70 @@ namespace Serialization;
 
 use Serialization\Base\ISerializer;
 use Serialization\Base\ISerialization;
+use Serialization\Base\INormalizedSerializer;
+use Serialization\Exceptions\InvalidJsonException;
+use Serialization\Exceptions\SerializationException;
+use Serialization\Exceptions\CouldNotBeConvertedToJsonException;
 
 
-class Serialization implements ISerialization 
+/**
+ * @autoload
+ */
+class Serialization implements ISerialization
 {
-	
-	public function add(ISerializer $serializer): ISerialization
-	{
-		// TODO: Implement add() method.
-	}
-	
 	/**
-	 * Array must contain objects of same type
-	 * @param mixed $data
-	 * @return bool
+	 * @autoload
+	 * @var \Serialization\Base\ISerializationContainer
 	 */
-	public function canSerializeArray(array $data): bool
+	private $container;
+	
+	
+	private function validateIsJsonArray($result, string $data)
 	{
-		// TODO: Implement canSerializeArray() method.
+		if (is_null($result))
+			throw new InvalidJsonException($data);
+		else if (!is_array($result))
+			throw new SerializationException('Data must be a serialized array!');
 	}
 	
-	/**
-	 * @param mixed $data
-	 * @return bool
-	 */
-	public function canDeserializeArray(array $data): bool
+	private function validateSerializerFound(?ISerializer $serializer)
 	{
-		// TODO: Implement canDeserializeArray() method.
+		if (is_null($serializer))
+			throw new SerializationException('Serializer not defined for target');
 	}
 	
-	/**
-	 * @param mixed $data
-	 * @return mixed
-	 */
-	public function serializeAll(array $data)
+	private function toJson($data): string
 	{
-		// TODO: Implement serializeAll() method.
+		$result = json_encode($data);
+		
+		if (is_null($result))
+			throw new CouldNotBeConvertedToJsonException();
+		
+		return $result;
 	}
 	
-	/**
-	 * @param mixed $data
-	 * @return mixed
-	 */
-	public function deserialize($data)
+	
+	public function add(INormalizedSerializer $serializer): ISerialization
 	{
-		// TODO: Implement deserialize() method.
+		$this->container->add($serializer);
+		return $this;
 	}
+	
 	
 	public function canDeserialize(string $data): bool
 	{
-		// TODO: Implement canDeserialize() method.
+		return !is_null($this->container->getDeserializerForJson($data));
+	}
+	
+	/**
+	 * @param string $data
+	 * @return mixed
+	 */
+	public function deserialize(string $data)
+	{
+		$serializer = $this->container->getDeserializerForJson($data);
+		$this->validateSerializerFound($serializer);
+		return $serializer->deserialize($data);
 	}
 	
 	/**
@@ -62,7 +76,7 @@ class Serialization implements ISerialization
 	 */
 	public function canSerialize($data): bool
 	{
-		// TODO: Implement canSerialize() method.
+		return !is_null($this->container->getSerializerForTarget($data));
 	}
 	
 	/**
@@ -71,6 +85,109 @@ class Serialization implements ISerialization
 	 */
 	public function serialize($data): string
 	{
-		// TODO: Implement serialize() method.
+		$serializer = $this->container->getSerializerForTarget($data);
+		$this->validateSerializerFound($serializer);
+		return $serializer->serialize($data);
+	}
+	
+	
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
+	public function canDeserializeData($data): bool
+	{
+		return !is_null($this->container->getDeserializerForData($data));
+	}
+	
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	public function getSerializedData($data)
+	{
+		$serializer = $this->container->getSerializerForTarget($data);
+		$this->validateSerializerFound($serializer);
+		return $serializer->getSerializedData($data);
+	}
+	
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	public function deserializeFromData($data)
+	{
+		$serializer = $this->container->getDeserializerForData($data);
+		$this->validateSerializerFound($serializer);
+		return $serializer->deserializeFromData($data);
+	}
+	
+	
+	/**
+	 * Array must contain objects of same type
+	 * @param mixed $data
+	 * @return bool
+	 */
+	public function canSerializeArray(array $data): bool
+	{
+		foreach ($data as $item)
+		{
+			if (is_null($this->container->getSerializerForTarget($item)))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Data must be a previously serialized array.
+	 * @param string $data Serialized array of items.
+	 * @return bool
+	 */
+	public function canDeserializeArray(string $data): bool
+	{
+		$result = json_decode($data);
+		
+		$this->validateIsJsonArray($result, $data);
+		
+		foreach ($result as $item)
+		{
+			if (is_null($this->container->getDeserializerForData($item)))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public function serializeAll(array $data): string
+	{
+		$result = [];
+		
+		foreach ($data as $item)
+		{
+			$result[] = $this->getSerializedData($item);
+		}
+		
+		return $this->toJson($result);
+	}
+	
+	/**
+	 * Data must be a previously serialized array.
+	 * @param string $data Serialized array of items.
+	 * @return array
+	 */
+	public function deserializeAll(string $data): array
+	{
+		$result = [];
+		$decoded = json_decode($data);
+		
+		$this->validateIsJsonArray($decoded, $data);
+		
+		foreach ($decoded as $item)
+		{
+			$result[] = $this->deserializeFromData($item);
+		}
+		
+		return $result;
 	}
 }
