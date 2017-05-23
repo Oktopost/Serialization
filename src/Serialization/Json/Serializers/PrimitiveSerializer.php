@@ -1,5 +1,5 @@
 <?php
-namespace Serialization\Json;
+namespace Serialization\Json\Serializers;
 
 
 use Serialization\Base\Json\IJsonDataConstructor;
