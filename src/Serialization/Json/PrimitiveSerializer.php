@@ -9,12 +9,24 @@ class PrimitiveSerializer implements IJsonDataConstructor
 {
 	public function canSerialize($object): bool
 	{
-		return false;
+		return (is_string($object) || 
+			(
+				!is_object($object) && 
+				!is_array($object) && 
+				!is_callable($object)
+			)
+		);
 	}
 	
 	public function canDeserialize($data): bool
 	{
-		return false;
+		return (is_string($data) || 
+			(
+				!is_object($data) && 
+				!is_array($data) && 
+				!is_callable($data)
+			)
+		);
 	}
 	
 	/**
