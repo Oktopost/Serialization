@@ -11,4 +11,7 @@
 /vendor/
 
 # Test objects
-test.php
+/test.php
+
+# Build folders
+/build
