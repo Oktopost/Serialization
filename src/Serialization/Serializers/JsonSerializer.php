@@ -2,20 +2,16 @@
 namespace Serialization\Serializers;
 
 
+use Serialization\Scope;
 use Serialization\Exceptions;
 use Serialization\Base\IJsonSerializer;
 use Serialization\Base\Json\IJsonDataConstructor;
+use Serialization\Base\Json\IJsonSerializersContainer;
 
 
-/**
- * @autoload
- */
 class JsonSerializer implements IJsonSerializer
 {
-	/**
-	 * @autoload
-	 * @var \Serialization\Base\Json\IJsonSerializersContainer
-	 */
+	/** @var IJsonSerializersContainer */
 	private $container;
 	
 	
@@ -54,6 +50,12 @@ class JsonSerializer implements IJsonSerializer
 	}
 	
 	
+	public function __construct()
+	{
+		$this->container = Scope::skeleton(IJsonSerializersContainer::class);
+	}
+
+
 	/**
 	 * @param IJsonDataConstructor $constructor
 	 * @return static|IJsonSerializer
