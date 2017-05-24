@@ -2,9 +2,6 @@
 namespace Serialization;
 
 
-require_once __DIR__ . '/SkeletonSetup.php';
-
-
 use Skeleton\Skeleton;
 
 

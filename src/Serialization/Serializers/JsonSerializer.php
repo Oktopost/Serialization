@@ -47,7 +47,7 @@ class JsonSerializer implements IJsonSerializer
 	{
 		$result = json_encode($data);
 		
-		if (is_null($result))
+		if ($result === false)
 			throw new Exceptions\CouldNotBeConvertedToJsonException();
 		
 		return $result;
