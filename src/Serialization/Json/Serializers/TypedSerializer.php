@@ -79,9 +79,6 @@ class TypedSerializer implements IJsonDataConstructor
 		$dataToken = self::DATA_TOKEN;
 		$metaToken = self::META_TOKEN;
 		
-		$data = $data->$dataToken;
-		$meta = $data->$metaToken;
-		
-		return $this->child->deserialize($data, $meta);
+		return $this->child->deserialize($data->$dataToken, $data->$metaToken ?? null);
 	}
 }

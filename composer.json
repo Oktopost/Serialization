@@ -27,5 +27,9 @@
             "Serialization": "src"
         }
     },
+    "scripts": {
+        "test": "./vendor/phpunit/phpunit/phpunit",
+        "test-cover": "./vendor/phpunit/phpunit/phpunit --coverage-html ./build/cover"
+    },
     "minimum-stability": "stable"
 }
