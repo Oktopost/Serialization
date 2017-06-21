@@ -15,4 +15,6 @@ interface IJsonSerializer extends ISerializeManager
 	 * @return static|IJsonSerializer
 	 */
 	public function add(IJsonDataConstructor $constructor): IJsonSerializer;
+	
+	public function asDataConstructor(): IJsonDataConstructor;
 }

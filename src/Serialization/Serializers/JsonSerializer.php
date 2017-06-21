@@ -2,6 +2,7 @@
 namespace Serialization\Serializers;
 
 
+use Serialization\Json\JsonSerializerDataConstructor;
 use Serialization\Scope;
 use Serialization\Exceptions;
 use Serialization\Base\IJsonSerializer;
@@ -129,5 +130,10 @@ class JsonSerializer implements IJsonSerializer
 		$serializer = $this->container->getDeserializerForData($object);
 		$this->validateSerializerFound($serializer);
 		return $serializer->deserialize($object);
+	}
+
+	public function asDataConstructor(): IJsonDataConstructor
+	{
+		return new JsonSerializerDataConstructor($this->container);
 	}
 }
