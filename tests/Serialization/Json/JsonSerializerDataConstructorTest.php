@@ -40,6 +40,19 @@ class JsonSerializerDataConstructorTest extends TestCase
 		self::assertEquals($subject->b, $result->b);
 		self::assertEquals($subject->c, $result->c);
 	}
+	
+	/**
+	 * @expectedException \Serialization\Exceptions\SerializationException
+	 */
+	public function test_serialize_NoSerializer_ExceptionThrown()
+	{
+		$serializer = new JsonSerializer();
+		$constructor = $serializer->asDataConstructor();
+		
+		$subject = new LiteObjectSerializerTest_Helper();
+		
+		$data = $constructor->serialize($subject);
+	}
 }
 
 
