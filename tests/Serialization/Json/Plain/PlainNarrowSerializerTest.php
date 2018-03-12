@@ -37,7 +37,7 @@ class PlainNarrowSerializerTest extends TestCase
 		$subject = new PlainNarrowSerializer();
 		
 		self::assertEquals(
-			$subject->canSerialize(new class extends LiteObject {
+			$subject->serialize(new class extends LiteObject {
 				protected function _setup() { return []; }
 			}),
 			[]
@@ -49,7 +49,7 @@ class PlainNarrowSerializerTest extends TestCase
 		$subject = new PlainNarrowSerializer();
 		
 		self::assertEquals(
-			$subject->canSerialize(new class extends LiteObject {
+			$subject->serialize(new class extends LiteObject {
 				protected function _setup() 
 				{
 					return [
@@ -70,7 +70,7 @@ class PlainNarrowSerializerTest extends TestCase
 		$subject = new PlainNarrowSerializer();
 		
 		self::assertEquals(
-			$subject->canSerialize(new class extends LiteObject {
+			$subject->serialize(new class extends LiteObject {
 				protected function _setup() 
 				{
 					return [
@@ -90,11 +90,11 @@ class PlainNarrowSerializerTest extends TestCase
 		$subject = new PlainNarrowSerializer();
 		
 		self::assertEquals(
-			$subject->canSerialize(new class extends LiteObject {
+			$subject->serialize(new class extends LiteObject {
 				protected function _setup() 
 				{
 					return [
-						'A'	=> LiteSetup::createArray(''),
+						'A'	=> LiteSetup::createString(''),
 						'B'	=> LiteSetup::createInt(0),
 						'C'	=> LiteSetup::createBool(false)
 					]; 
@@ -124,7 +124,7 @@ class PlainNarrowSerializerTest extends TestCase
 		$parent->A = new ChildClass(['child_A' => '123', 'child_B' => 456]);
 		
 		self::assertEquals(
-			$subject->canSerialize($parent),
+			$subject->serialize($parent),
 			[
 				'A' =>
 				[
@@ -151,7 +151,7 @@ class PlainNarrowSerializerTest extends TestCase
 		$parent->A = new ChildClass(['child_A' => '123']);
 		
 		self::assertEquals(
-			$subject->canSerialize($parent),
+			$subject->serialize($parent),
 			[
 				'A' =>
 				[
@@ -178,7 +178,7 @@ class PlainNarrowSerializerTest extends TestCase
 		$parent->A = new ChildClass();
 		
 		self::assertEquals(
-			$subject->canSerialize($parent),
+			$subject->serialize($parent),
 			[
 				'A'	=> [],
 				'B' => 123
@@ -201,7 +201,7 @@ class PlainNarrowSerializerTest extends TestCase
 		};
 		
 		self::assertEquals(
-			$subject->canSerialize($parent),
+			$subject->serialize($parent),
 			[ 'B' => 123 ]
 		);
 	}
