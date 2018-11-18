@@ -138,22 +138,6 @@ class JsonSerializerTest extends TestCase
 		$this->subject()->serialize('a');
 	}
 	
-	/**
-	 * @expectedException \Serialization\Exceptions\CouldNotBeConvertedToJsonException
-	 */
-	public function test_serialize_DataCanNotBeConvertedToJson_ExceptionThrown()
-	{
-		$serializer = $this->mockConstructor();
-		$serializer
-			->method('serialize')
-			->willReturn(random_bytes(256));
-		
-		$container = $this->mockContainer();
-		$container->method('getSerializerForTarget')->willReturn($serializer);
-		
-		$this->subject()->serialize('a');
-	}
-	
 	public function test_serialize_HaveSerializer_ReturnSerializerResult()
 	{
 		$serializer = $this->mockConstructor();

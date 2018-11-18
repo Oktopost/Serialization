@@ -96,7 +96,7 @@ class LiteSerializer implements ISerializer
 	 */
 	public function deserialize(string $data)
 	{
-		$result = json_decode($data);
+		$result = jsondecode($data);
 		
 		if (is_null($result) && $data !== 'null')
 			throw new Exceptions\InvalidJsonException($data);
@@ -110,7 +110,7 @@ class LiteSerializer implements ISerializer
 	 */
 	public function serialize($data): string
 	{
-		$result = json_encode($this->clearEmpty($data));
+		$result = jsonencode($this->clearEmpty($data));
 		
 		if ($result === false)
 			throw new Exceptions\CouldNotBeConvertedToJsonException();

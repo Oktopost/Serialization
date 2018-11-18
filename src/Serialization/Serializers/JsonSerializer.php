@@ -2,12 +2,12 @@
 namespace Serialization\Serializers;
 
 
-use Serialization\Json\JsonSerializerDataConstructor;
 use Serialization\Scope;
 use Serialization\Exceptions;
 use Serialization\Base\IJsonSerializer;
 use Serialization\Base\Json\IJsonDataConstructor;
 use Serialization\Base\Json\IJsonSerializersContainer;
+use Serialization\Json\JsonSerializerDataConstructor;
 
 
 class JsonSerializer implements IJsonSerializer
@@ -32,7 +32,7 @@ class JsonSerializer implements IJsonSerializer
 	
 	private function fromJson($data)
 	{
-		$result = json_decode($data);
+		$result = jsondecode($data);
 		
 		if (is_null($result) && $data !== 'null')
 			throw new Exceptions\InvalidJsonException($data);
@@ -42,7 +42,7 @@ class JsonSerializer implements IJsonSerializer
 	
 	private function toJson($data): string
 	{
-		$result = json_encode($data);
+		$result = jsonencode($data);
 		
 		if ($result === false)
 			throw new Exceptions\CouldNotBeConvertedToJsonException();
@@ -75,7 +75,7 @@ class JsonSerializer implements IJsonSerializer
 	public function deserializeAll(string $data)
 	{
 		$result = [];
-		$decoded = json_decode($data);
+		$decoded = jsondecode($data);
 		
 		$this->validateIsJsonArray($decoded, $data);
 		
@@ -105,7 +105,7 @@ class JsonSerializer implements IJsonSerializer
 			$result[] = $serializer->serialize($item);
 		}
 		
-		return json_encode($result);
+		return jsonencode($result);
 	}
 	
 	/**
