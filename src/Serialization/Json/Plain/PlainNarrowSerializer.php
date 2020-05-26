@@ -57,7 +57,7 @@ class PlainNarrowSerializer implements IPlainSerializer
 	 */
 	public function serialize($object, &$meta = '')
 	{
-		$meta = get_class($object);
+		$meta = $object ? get_class($object) : null;
 		
 		return $this->clearEmpty($object);
 		// TODO: Implement serialize() method.
