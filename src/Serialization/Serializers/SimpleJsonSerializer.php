@@ -18,7 +18,7 @@ class SimpleJsonSerializer implements ISerializer
 	 */
 	public function deserialize(string $data)
 	{
-		return jsondecode($data);
+		return jsondecode_std($data);
 	}
 	
 	/**

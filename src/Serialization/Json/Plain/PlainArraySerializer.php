@@ -40,7 +40,7 @@ class PlainArraySerializer implements IPlainSerializer
 	{
 		if ($meta == 'array')
 		{
-			return jsondecode(jsonencode($data), true);
+			return jsondecode_a(jsonencode($data));
 		}
 		else
 		{

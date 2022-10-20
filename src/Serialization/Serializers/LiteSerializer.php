@@ -96,7 +96,7 @@ class LiteSerializer implements ISerializer
 	 */
 	public function deserialize(string $data)
 	{
-		$result = jsondecode($data);
+		$result = jsondecode_std($data);
 		
 		if (is_null($result) && $data !== 'null')
 			throw new Exceptions\InvalidJsonException($data);
