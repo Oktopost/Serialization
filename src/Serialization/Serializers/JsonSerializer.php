@@ -32,7 +32,7 @@ class JsonSerializer implements IJsonSerializer
 	
 	private function fromJson($data)
 	{
-		$result = jsondecode($data);
+		$result = jsondecode_std($data);
 		
 		if (is_null($result) && $data !== 'null')
 			throw new Exceptions\InvalidJsonException($data);
@@ -75,7 +75,7 @@ class JsonSerializer implements IJsonSerializer
 	public function deserializeAll(string $data)
 	{
 		$result = [];
-		$decoded = jsondecode($data);
+		$decoded = jsondecode_std($data);
 		
 		$this->validateIsJsonArray($decoded, $data);
 		
